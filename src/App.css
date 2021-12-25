@@ -1,38 +1,70 @@
 .App {
   text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color:#fff;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.code input{
+	width: 1em;
+	margin: .2em;
+	padding: 8px 4px;
+	text-transform: uppercase;
+	font-size: 2.65em;
+	text-align: center;
+	border: 2px solid #BBBBFF;
+	border-radius: 4px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.code input:first-of-type {
+	margin-left:2px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.code input:last-of-type {
+	margin-right:0;
 }
 
-.App-link {
-  color: #61dafb;
+.action, .status, .message, .output {
+	padding:15px 0;
+	color:#fff;
+	height:38px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App button {
+	color:#fff;
+	border:0.1em solid #FFFFFF;
+	text-transform: uppercase;
+	background-color: transparent;
+	padding:10px 20px;
+}
+
+.output button {
+	float:right;
+	width:95px;
+}
+
+.output .inner {
+	width:calc(100% - 95px);
+	padding:10px 0;
+	float:left;
+	background-color:#fff;
+	color:#000;
+}
+
+.message input {
+	height:33px;
+	padding:0 10px;
+	width:calc(100% - 120px);
+	margin-right:15px;
+}
+
+.App button:hover {
+	color:#000;
+	background-color:#FFF;
+}
+
+input:disabled {
+	background-color:#FFF;
 }
