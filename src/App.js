@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
     if(!socket) {
-      console.log('setting socket');
+      console.log('setting socket (should not run more than once)');
       const newSocket = io(`http://${window.location.hostname}:3011`);
       setSocket(newSocket);
     }
@@ -26,7 +26,7 @@ function App() {
       return;
     }
 
-    console.log('registering socket events');
+    console.log('registering socket events (should not run more than once)');
     //socket events
     socket.on('error', handleError);
     socket.on('msg', handleMsg);
