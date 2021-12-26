@@ -16,8 +16,8 @@ function App() {
   useEffect(() => {
     if(!socket) {
       console.log('setting socket (should not run more than once)');
-      const port = window.location.hostname === 'localhost' ? '3011' : '80';
-      const newSocket = io(`//${window.location.hostname}:` + port, {path:'/socket/io'});
+      const port = window.location.hostname === 'localhost' ? ':3011' : '';
+      const newSocket = io(`//${window.location.hostname}` + port, {path:'/socket/io'});
       setSocket(newSocket);
     }
   }, []);
