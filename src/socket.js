@@ -12,7 +12,8 @@ let io = socketIO(server, {
   cors: {
     origin: ['http://localhost:3010'],
     methods: ['GET', 'POST']
-  }
+  },
+  path: '/socket/io'
 });
 
 server.listen(port);
