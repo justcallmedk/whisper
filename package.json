@@ -19,7 +19,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "serve": "serve -l 3010 -s ./build/"
+    "serve": "concurrently \"node src/socket.js\" \"serve -l 3010 -s ./build/\""
   },
   "eslintConfig": {
     "extends": [
