@@ -5,21 +5,23 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 	color:#fff;
+	width:100%;
+	max-width:380px;
 }
 
 .code input{
-	width: 1em;
-	margin: .2em;
-	padding: 8px 4px;
+	width:30px;
+	margin:8px;
+	font-size:30px;
+	padding:8px;
 	text-transform: uppercase;
-	font-size: 2.65em;
 	text-align: center;
 	border: 2px solid #BBBBFF;
 	border-radius: 4px;
 }
 
 .code input:first-of-type {
-	margin-left:2px;
+	margin-left:0;
 }
 
 .code input:last-of-type {
@@ -46,11 +48,12 @@
 }
 
 .output .inner {
-	width:calc(100% - 95px);
-	padding:10px 0;
+	width:calc(100% - 115px);
+	padding:10px;
 	float:left;
 	background-color:#fff;
 	color:#000;
+	text-align: left;
 }
 
 .message input {
@@ -62,9 +65,22 @@
 
 .App button:hover {
 	color:#000;
-	background-color:#FFF;
+	background-color:cyan;
+	cursor:pointer;
 }
 
 input:disabled {
 	background-color:#FFF;
+}
+
+@media only screen and (max-width: 375px) {
+	.App {
+		max-width:315px;
+	}
+	.code input {
+		width: 30px;
+		font-size:30px;
+		margin:5px;
+		padding:5px;
+	}
 }
