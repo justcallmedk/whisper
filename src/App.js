@@ -163,7 +163,7 @@ function App() {
       { output !== '' &&
         <div className="output">
           <div className="inner">
-            {output.substring(0,10) + ' ...'}
+            { output }
           </div>
           <button onClick={copy}>
             {copyButtonText}
