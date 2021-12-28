@@ -1,5 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import cryptoJS from 'crypto-js';
+import config from './config.js';
 import './App.css';
 
 function App() {
@@ -10,13 +12,15 @@ function App() {
   const [joined, setJoined] = useState(false);
   const [init, setInit] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
-  const [copyButtonText, setCopyButtonText] = useState('');
-  let codeRefs = {};
+  const [copyButtonText, setCopyButtonText] = useState('copy');
+  const [createButtonText, setCreateButtonText] = useState('create');
+  const [receiver, setReceiver] = useState('');
+  const [codeRefs] = useState({});
 
   useEffect(() => {
     if(!socket) {
-      console.log('setting socket (should not run more than once)');
-      const port = window.location.hostname === 'localhost' ? ':3011' : '';
+      console.log('setting socket');
+      const port = window.location.hostname === 'localhost' ? ':' + config.socketPort : '';
       const newSocket = io(`//${window.location.hostname}` + port, {path:'/socket/io'});
       setSocket(newSocket);
     }
@@ -27,7 +31,7 @@ function App() {
       return;
     }
 
-    console.log('registering socket events (should not run more than once)');
+    console.log('registering socket events');
     //socket events
     socket.on('error', handleError);
     socket.on('msg', handleMsg);
@@ -51,7 +55,8 @@ function App() {
   };
 
   const handleJoined = (msg) => {
-    if(msg) { // contains visitor's id
+    if(msg) { // contains receiver's id
+      setReceiver(msg);
       setStatusMsg('');
       setJoined(true);
     }
@@ -61,9 +66,19 @@ function App() {
     }
   };
 
+  const encrypt = (msg) => {
+    return cryptoJS.AES.encrypt(msg, receiver).toString();
+  };
+
+  const decrypt = (msg) => {
+    const bytes  = cryptoJS.AES.decrypt(msg, socket.id);
+    const decrypted = bytes.toString(cryptoJS.enc.Utf8);
+    return decrypted;
+  }
+
   const handleMsg = (msg) => {
     setStatusMsg('');
-    setOutput(msg);
+    setOutput(decrypt(msg));
   };
 
   const handleError = (msg) => {
@@ -71,16 +86,20 @@ function App() {
   };
 
   const doAction = (action,value) => {
+    if(action === 'send') {
+      value.msg = encrypt(value.msg);
+    }
     socket.emit(action,value);
   };
 
   const inputCode = (pos,value) => {
-    if(value === '') return;
-
     let codes = '';
     for(const code in codeRefs) {
       codes += codeRefs[code].value.toUpperCase();
     }
+    codes.length > 0 ? setCreateButtonText('...') : setCreateButtonText('create');
+
+    if(value === '') return;
 
     if(pos < 5) {
       codeRefs[pos+1].focus();
@@ -123,15 +142,16 @@ function App() {
       </div>
       { !init &&
         <div className="action">
-          <button onClick={ () => doAction('create') }>
-            create
+          <button disabled={ createButtonText !== 'create' }
+                  onClick={ () => doAction('create') }>
+            {createButtonText}
           </button>
         </div>
       }
       { joined &&
         <div className="message">
           <input value={msg}
-                 onInput={e => setMsg(e.target.value)}/>
+                 onInput={e => setMsg(e.target.value)} />
           <button onClick={() => {
             doAction('send', {code: codes, msg: msg});
             setMsg('');
@@ -146,7 +166,7 @@ function App() {
             {output.substring(0,10) + ' ...'}
           </div>
           <button onClick={copy}>
-            {copyButtonText === '' ?  'copy' : copyButtonText}
+            {copyButtonText}
           </button>
         </div>
       }

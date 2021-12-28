@@ -63,7 +63,7 @@
 	margin-right:15px;
 }
 
-.App button:hover {
+.App button:hover:enabled {
 	color:#000;
 	background-color:cyan;
 	cursor:pointer;
@@ -71,6 +71,10 @@
 
 input:disabled {
 	background-color:#FFF;
+}
+
+button:disabled {
+	color:darkgray;
 }
 
 @media only screen and (max-width: 375px) {

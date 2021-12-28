@@ -2,8 +2,9 @@ const express = require('express'); // using express
 const socketIO = require('socket.io');
 const http = require('http')
 const cors = require('cors');
+const config = require('./config');
 
-const port = process.env.PORT || 3011 // setting the port
+const port = process.env.PORT || config.socketPort // setting the port
 let app = express();
 app.use(cors());
 
@@ -53,6 +54,7 @@ io.on('connection', (socket)=>{
       io.to(socket.id).emit('error','invalid code');
       return;
     }
+
     sessions[code].guest = socket.id
     io.to(sessions[code].creator).emit('joined',sessions[code].guest);
     io.to(socket.id).emit('joined');
@@ -64,6 +66,7 @@ io.on('connection', (socket)=>{
       io.to(socket.id).emit('error','invalid code');
       return;
     }
+
     let to;
     if(sessions[code].creator === socket.id) {
       to = sessions[code].guest;
@@ -86,7 +89,7 @@ io.on('connection', (socket)=>{
     delete sessions[code];
   });
 
-  socket.on('ping', (msg) => {
+  socket.on('ping', () => {
     io.to(socket.id).emit('msg','pong');
   });
 });
