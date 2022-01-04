@@ -41,7 +41,10 @@ function App() {
     return () => {
       // before the component is destroyed
       // unbind all event handlers used in this component
+      socket.off("error", handleCreated);
+      socket.off("msg", handleCreated);
       socket.off("created", handleCreated);
+      socket.off("joined", handleCreated);
     };
   }, [socket]);
 
